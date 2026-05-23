@@ -26,7 +26,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,7 +50,6 @@ private val Ink = Color(0xFF101D26)
 private val Muted = Color(0xFF7D8589)
 private val IslandGreen = Color(0xFF4AA060)
 private val DeepGreen = Color(0xFF2F7D4D)
-private val Cream = Color(0xFFFFFAF0)
 private val Line = Color(0xFFEDE2CF)
 private val SoftBlue = Color(0xFFDDF7FF)
 
@@ -181,6 +179,41 @@ private fun LoginScreen(onLogin: () -> Unit) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun IslandHeroCard(title: String, subtitle: String, height: androidx.compose.ui.unit.Dp) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height),
+        shape = RoundedCornerShape(30.dp),
+        colors = CardDefaults.cardColors(containerColor = SoftBlue.copy(alpha = 0.78f)),
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.8f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color(0xFFDDF7FF), Color(0xFFEAF9D2), Color(0xFFFBE2A1))
+                    )
+                )
+                .padding(22.dp)
+        ) {
+            Text("☁", modifier = Modifier.align(Alignment.TopEnd), fontSize = 56.sp, color = Color.White.copy(alpha = 0.85f))
+            Text("🌴", modifier = Modifier.align(Alignment.BottomStart), fontSize = 58.sp)
+            Text("🏡", modifier = Modifier.align(Alignment.CenterEnd).padding(end = 14.dp), fontSize = 46.sp)
+            Text("🌊", modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp), fontSize = 42.sp)
+            Column(modifier = Modifier.align(Alignment.TopStart)) {
+                Text(title, fontSize = 26.sp, fontWeight = FontWeight.Black, color = Ink)
+                Spacer(Modifier.height(8.dp))
+                Text(subtitle, fontSize = 16.sp, color = Color(0xFF4F6668))
+            }
+            Text("🤖", modifier = Modifier.align(Alignment.Center), fontSize = 82.sp)
         }
     }
 }
@@ -326,7 +359,7 @@ private fun IslandBottomBar(current: TabItem, onChange: (TabItem) -> Unit) {
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TabItem.values().forEach { item ->
+            TabItem.entries.forEach { item ->
                 Column(
                     modifier = Modifier.clickable { onChange(item) },
                     horizontalAlignment = Alignment.CenterHorizontally
