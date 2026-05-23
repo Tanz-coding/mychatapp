@@ -11,6 +11,18 @@ object ApiClient {
     }
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor { chain ->
+            val value = RuntimeSession.authValue
+            val request = if (value.isNullOrBlank()) {
+                chain.request()
+            } else {
+                chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer $value")
+                    .addHeader("token", value)
+                    .build()
+            }
+            chain.proceed(request)
+        }
         .addInterceptor(loggingInterceptor)
         .build()
 
